@@ -1,14 +1,21 @@
-import { Component } from "react";
+import React from "react";
+import ImageGalleryItem from "components/ImageGalleryItem";
 
-export default class ImageGallery extends Component {
-  
-    componentDidUpdate(prevProps) {
-    if(prevProps.imageGallery !== this.props.imageGallery){}
-}
 
-  render() {
-    return (<>
-        <ul><li>{this.props.imageGallery}</li></ul>
-    </>)
-  }
-}
+const ImageGallery = ({photos}) => {
+    return (
+        <ul >
+            {photos.map(photo =>
+                {
+                    return (
+                        <ImageGalleryItem key={photo.id}
+                link={photo.webformatURL}
+                largeImage={photo.largeImageURL}
+                altTitle={photo.tags} />
+                    );
+                })}   
+        </ul>
+    );
+};
+
+export default ImageGallery;
