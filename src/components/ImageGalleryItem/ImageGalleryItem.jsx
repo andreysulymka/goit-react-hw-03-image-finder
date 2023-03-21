@@ -12,9 +12,9 @@ import { Image, Item } from "./ImageGalleryItem.styled";
 const ImageGalleryItem = ({ photo, onPhotoClick }) => {
   return (
     <Item>
-      <a href={photo.largeImageURL}>
-        <Image src={photo.webformatURL} alt={photo.tags} onClick={() => onPhotoClick(photo)}/>
-      </a>
+      
+        <Image src={photo.webformatURL} alt={photo.tags} lowrc={photo.largeImage} onClick={() => onPhotoClick(photo.largeURL)}/>
+      
     </Item>
   );
 };
