@@ -13,7 +13,7 @@ const ImageGalleryItem = ({ photo, onPhotoClick }) => {
   return (
     <Item>
       
-        <Image src={photo.webformatURL} alt={photo.tags} lowrc={photo.largeImage} onClick={() => onPhotoClick(photo.largeURL)}/>
+        <Image src={photo.webformatURL} alt={photo.tags} lowsrc={photo.largeImageURL} onClick={() => onPhotoClick(photo.largeImageURL)}/>
       
     </Item>
   );

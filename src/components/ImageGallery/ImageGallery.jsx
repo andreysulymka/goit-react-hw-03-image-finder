@@ -9,7 +9,7 @@ const ImageGallery = ({ photos, onLoadMore, onPhotoClick  }) => {
     <div>
       <List >
         {photos.map((photo) => (
-          <ImageGalleryItem key={photo.id} photo={photo}  onClick={() => onPhotoClick(photo.largeImageURL)}/>
+          <ImageGalleryItem key={photo.id} photo={photo}  onPhotoClick={onPhotoClick}/>
         ))}
       </List>
       <div >

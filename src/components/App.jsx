@@ -66,18 +66,34 @@ export default class App extends Component {
   handleOverlay = ({target}) => {
         if(target.tagName !=="IMG") this.setState({isHidden:false})
     }
-    handleImage = ({ target }) => {
-        if(target.tagName === "IMG") 
-        {this.setState({
-            isHidden: true,
-            modalSrc:target.lowsrc,
-        })
-        } else {
-            this.setState({
-            isHidden: false,
-        })
-        }
+  // handleImage = ({ target }) => {
+  //     console.log(target);
+  //       if(target.tagName === "IMG") 
+  //       {this.setState({
+  //           isHidden: true,
+  //           modalSrc:target.lowsrc,
+  //       })
+  //       } else {
+  //           this.setState({
+  //           isHidden: false,
+  //       })
+  //       }
+  //   }
+  
+  handleImage = ({ target }) => {
+  if (target) {
+    if (target.tagName === "IMG") {
+      this.setState({
+        isHidden: true,
+        modalSrc: target.lowsrc,
+      });
+    } else {
+      this.setState({
+        isHidden: false,
+      });
     }
+  }
+};
 
   render() {
     const { photos, isLoading, isHidden} = this.state;
@@ -86,7 +102,7 @@ export default class App extends Component {
       <Container>
         <Searchbar onSearch={this.handleFormSubmit} />
         {isLoading && <Loader />}
-        {photos && <ImageGallery photos={photos} onLoadMore={this.handleLoadMore} onClick={this.handleImage}/>}
+        {photos && <ImageGallery photos={photos} onLoadMore={this.handleLoadMore} onPhotoClick={this.handleImage}/>}
         {isHidden && <Modal
                 overlayClick={this.handleOverlay}
                 largeImage={this.state.modalSrc} />}
