@@ -1,11 +1,11 @@
 import { Component } from "react";
 import Loader from "./Loader/Loader";
 import Searchbar from "./Searchbar";
-import { ToastContainer, toast} from 'react-toastify';
 import { getPhotos } from "./services/getPhotos";
 import ImageGallery from "./ImageGallery";
 import Modal from "./Modal/Modal"
 import { Base, Container } from "./App.styled";
+import Notiflix from 'notiflix';
 
 export default class App extends Component {
   state = {
@@ -47,7 +47,7 @@ export default class App extends Component {
           photos: prevState.photos ? [...prevState.photos, ...photos.hits] : photos.hits,
         }));
       })
-      .catch((error) => toast.error(error.message))
+      .catch((error) => Notiflix.Notify.failure(error.message))
       .finally(() => {
         this.setState({ isLoading: false });
       });
@@ -87,8 +87,7 @@ export default class App extends Component {
         <Searchbar onSearch={this.handleFormSubmit} />
         {isLoading && <Loader />}
         {photos && <ImageGallery photos={photos} onLoadMore={this.handleLoadMore} onClick={this.handleImage}/>}
-        <ToastContainer />
-         {isHidden && <Modal
+        {isHidden && <Modal
                 overlayClick={this.handleOverlay}
                 largeImage={this.state.modalSrc} />}
         </Container>

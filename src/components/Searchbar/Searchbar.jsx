@@ -1,6 +1,6 @@
 import React from "react";
 import { Component } from "react";
-import { toast } from "react-toastify";
+import Notiflix from 'notiflix';
 import {Search, SearchBTN, SearchBTNLabel, SearchForm, SearchInput } from "./Searchbar.styled";
 
 export default class Searchbar extends Component {
@@ -16,7 +16,7 @@ export default class Searchbar extends Component {
         e.preventDefault();
 
         if (this.state.value.trim() === '') {
-            toast.error('Введіть пошуковий запит');
+            Notiflix.Notify.failure('Введіть пошуковий запит');;
             return;
         }
         this.props.onSearch(this.state.value)
