@@ -6,16 +6,16 @@ import { List } from "./ImageGallery.styled";
 
 const ImageGallery = ({ photos, onLoadMore, onPhotoClick  }) => {
   return (
-    <List>
-      <div >
+    <div>
+      <List >
         {photos.map((photo) => (
           <ImageGalleryItem key={photo.id} photo={photo}  onClick={() => onPhotoClick(photo.largeImageURL)}/>
         ))}
-      </div>
+      </List>
       <div >
         <LoadMoreButton onClick={onLoadMore} />
       </div>
-    </List>
+    </div>
   );
 };
 
