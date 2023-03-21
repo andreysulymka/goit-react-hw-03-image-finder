@@ -4,8 +4,8 @@ import Searchbar from "./Searchbar";
 import { ToastContainer, toast} from 'react-toastify';
 import { getPhotos } from "./services/getPhotos";
 import ImageGallery from "./ImageGallery";
-import Modal from "./Modal"
-
+import Modal from "./Modal/Modal"
+import { Base, Container } from "./App.styled";
 
 export default class App extends Component {
   state = {
@@ -13,8 +13,8 @@ export default class App extends Component {
     isLoading: false,
     photos: null,
     page: 1,
-    showModal: false,
-  modalSrc: null,
+    isHidden: false,
+        modalSrc:null,
   };
 
     componentDidMount() {
@@ -62,25 +62,37 @@ export default class App extends Component {
       this.loadPhotos();
     });
   };
-  handleCloseModal = () => {
-  this.setState({ showModal: false });
-  };
-  handlePhotoClick = (url) => {
-  this.setState({ showModal: true, modalSrc: url });
-};
+ 
+  handleOverlay = ({target}) => {
+        if(target.tagName !=="IMG") this.setState({isHidden:false})
+    }
+    handleImage = ({ target }) => {
+        if(target.tagName === "IMG") 
+        {this.setState({
+            isHidden: true,
+            modalSrc:target.lowsrc,
+        })
+        } else {
+            this.setState({
+            isHidden: false,
+        })
+        }
+    }
 
   render() {
-    const { photos, isLoading} = this.state;
+    const { photos, isLoading, isHidden} = this.state;
     return (
-      <>
+      <Base>
+      <Container>
         <Searchbar onSearch={this.handleFormSubmit} />
         {isLoading && <Loader />}
-        {photos && <ImageGallery photos={photos} onLoadMore={this.handleLoadMore} onPhotoClick={this.handlePhotoClick}/>}
+        {photos && <ImageGallery photos={photos} onLoadMore={this.handleLoadMore} onClick={this.handleImage}/>}
         <ToastContainer />
-         {this.state.showModal && (
-  <Modal largeImage={this.state.modalSrc} onClose={this.handleCloseModal} />
-)}
-      </>
+         {isHidden && <Modal
+                overlayClick={this.handleOverlay}
+                largeImage={this.state.modalSrc} />}
+        </Container>
+        </Base>
     );
   }
 }

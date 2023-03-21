@@ -1,6 +1,7 @@
 import React from "react";
 import { Component } from "react";
 import { toast } from "react-toastify";
+import {Search, SearchBTN, SearchBTNLabel, SearchForm, SearchInput } from "./Searchbar.styled";
 
 export default class Searchbar extends Component {
   state = {
@@ -24,13 +25,13 @@ export default class Searchbar extends Component {
   
   render() {
       return (
-        <header>
-  <form onSubmit={this.handleSubmit}>
-    <button type="submit">
-      <span>Search</span>
-    </button>
+        <Search>
+  <SearchForm onSubmit={this.handleSubmit}>
+    <SearchBTN type="submit">
+      <SearchBTNLabel>Search</SearchBTNLabel>
+    </SearchBTN>
 
-    <input
+    <SearchInput
       type="text"
     //   autocomplete="off"
     //   autofocus
@@ -38,8 +39,8 @@ export default class Searchbar extends Component {
                       onChange={this.handleChange}
                       value={this.state.value}
     />
-  </form>
-</header>
+  </SearchForm>
+</Search>
     )
   }
 }

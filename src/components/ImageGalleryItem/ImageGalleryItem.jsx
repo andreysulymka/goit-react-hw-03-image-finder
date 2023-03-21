@@ -1,4 +1,5 @@
 import React from "react";
+import { Image, Item } from "./ImageGalleryItem.styled";
 
 // const ImageGalleryItem = ({link, altTitle, largeImage}) =>{
 //   return <li >
@@ -10,11 +11,11 @@ import React from "react";
 
 const ImageGalleryItem = ({ photo, onPhotoClick }) => {
   return (
-    <li>
+    <Item>
       <a href={photo.largeImageURL}>
-        <img src={photo.webformatURL} alt={photo.tags} onClick={() => onPhotoClick(photo)}/>
+        <Image src={photo.webformatURL} alt={photo.tags} onClick={() => onPhotoClick(photo)}/>
       </a>
-    </li>
+    </Item>
   );
 };
 
