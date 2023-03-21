@@ -80,18 +80,18 @@ export default class App extends Component {
   //       }
   //   }
   
-  handleImage = ({ target }) => {
-  if (target) {
-    if (target.tagName === "IMG") {
-      this.setState({
-        isHidden: true,
-        modalSrc: target.lowsrc,
-      });
-    } else {
-      this.setState({
-        isHidden: false,
-      });
-    }
+handleImage = (event) => {
+  const { tagName, lowsrc } = event.target;
+  if (tagName === "IMG" && lowsrc) {
+    this.setState({
+      isHidden: true,
+      modalSrc: lowsrc
+    });
+  } else {
+    this.setState({
+      isHidden: false,
+      modalSrc: null
+    });
   }
 };
 
