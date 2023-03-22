@@ -6,7 +6,7 @@ import { List } from "./ImageGallery.styled";
 
 
 const ImageGallery = ({ photos, onLoadMore, modalOpen }) => {
-  
+  const showLoadMoreBtn = photos.length >= 12;
   return (
     <div>
       <List onClick={modalOpen}>
@@ -14,8 +14,8 @@ const ImageGallery = ({ photos, onLoadMore, modalOpen }) => {
           <ImageGalleryItem key={photo.id} src={photo.webformatURL} alt={photo.tags} srcLarge={photo.largeImageURL} />
         ))}
       </List>
-      <div >
-        <LoadMoreButton onClick={onLoadMore} />
+      <div > 
+        {showLoadMoreBtn && <LoadMoreButton onClick={onLoadMore} />}
       </div>
     </div>
   );

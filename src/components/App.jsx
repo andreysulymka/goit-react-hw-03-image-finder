@@ -15,40 +15,47 @@ export default class App extends Component {
     page: 1,
    showModal: false,
     modalImgSrc: "",
+    showBTN: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.searchText !== this.state.searchText) {
-      this.setState({ isLoading: true, photos: null, page: 1 }, () => {
+    if (prevState.searchText !== this.state.searchText||prevState.page !== this.state.page) {
+      this.setState({ isLoading: true}, () => {
         this.loadPhotos();
-      });
-    }
+      });    }
   }
 
-  loadPhotos = () => {
-    const { searchText, page } = this.state;
-    getPhotos(searchText, page)
-      .then((res) => res.json())
-      .then((photos) => {
+ loadPhotos = () => {
+  const { searchText, page } = this.state;
+  getPhotos(searchText, page)
+    .then((res) => res.json())
+    .then((photos) => {
+      if (photos.hits.length === 0) {
+        
+        throw new Error(`No photos found for "${searchText}"`);
+      } else {
         this.setState((prevState) => ({
-          photos: prevState.photos ? [...prevState.photos, ...photos.hits] : photos.hits,
+          photos: [...prevState.photos, ...photos.hits],
+          showBTN: page < Math.ceil(photos.totalHits / 12),
         }));
-      })
-      .catch((error) => Notiflix.Notify.failure(error.message))
-      .finally(() => {
-        this.setState({ isLoading: false });
-      });
-  };
+      }
+    })
+    .catch((error) => {
+      Notiflix.Notify.failure(error.message);
+      this.setState({ showBTN: false });
+    })
+    .finally(() => {
+      this.setState({ isLoading: false });
+    });
+};
 
    
   handleFormSubmit = (inputSearch) => {
-    this.setState({ searchText: inputSearch });
+    this.setState({ searchText: inputSearch, photos: [], page: 1  });
   };
 
   handleLoadMore = () => {
-    this.setState((prevState) => ({ page: prevState.page + 1 }), () => {
-      this.loadPhotos();
-    });
+    this.setState((prevState) => ({ page: prevState.page + 1 }));
   };
  
 modalOpen = e => {
@@ -69,7 +76,7 @@ modalOpen = e => {
       <Container>
         <Searchbar onSearch={this.handleFormSubmit} />
         {isLoading && <Loader />}
-        {photos && (<ImageGallery photos={photos} modalOpen={this.modalOpen} onLoadMore={this.handleLoadMore}/>
+        {photos && photos.length > 0 && (<ImageGallery photos={photos} modalOpen={this.modalOpen} onLoadMore={this.handleLoadMore}/>
         )}
         {showModal  && <Modal modalClose={this.modalClose} children={<img src={modalImgSrc} alt={modalImgAlt}/>}/>}
         </Container>
