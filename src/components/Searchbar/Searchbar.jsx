@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Component } from "react";
 import Notiflix from 'notiflix';
 import {Search, SearchBTN, SearchBTNLabel, SearchForm, SearchInput } from "./Searchbar.styled";
@@ -33,9 +34,7 @@ export default class Searchbar extends Component {
 
     <SearchInput
       type="text"
-    //   autocomplete="off"
-    //   autofocus
-      placeholder="Search images and photos"
+    placeholder="Search images and photos"
                       onChange={this.handleChange}
                       value={this.state.value}
     />
@@ -44,4 +43,10 @@ export default class Searchbar extends Component {
     )
   }
 }
+
+Searchbar.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  onSubmit: PropTypes.func,
+};
 

@@ -1,15 +1,40 @@
-import React from "react";
-import { ModalStyled, Overlay } from "./Modal.styled";
+import PropTypes from 'prop-types';
+import { Component } from 'react';
+import {Overlay, ModalStyled } from './Modal.styled';
 
+export default class Modal extends Component {
 
-function Modal ({largeImage, overlayClick}){
-     
-    return <Overlay onClick={overlayClick}>
-  <ModalStyled >
-    <img src={largeImage} alt="" />
-  </ModalStyled>
-</Overlay>
+    static propTypes = {
+        children: PropTypes.node,
+    };
+
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyDown);
+    };
     
-}
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
+    };
 
-export default Modal;
+    handleKeyDown = e => {
+        if (e.code === 'Escape') {
+            this.props.modalClose();
+        };
+    };
+
+    handleBackdropClick = e => {
+        if(e.target.id === "backdrop") {
+            this.props.modalClose();
+        };
+    };
+
+    render() {
+        return (
+            <Overlay id={"backdrop"} onClick={this.handleBackdropClick}>
+                <ModalStyled>
+                    {this.props.children}
+                </ModalStyled>
+            </Overlay>
+        );
+    };
+};

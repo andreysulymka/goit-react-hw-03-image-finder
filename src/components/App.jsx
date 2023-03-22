@@ -11,24 +11,11 @@ export default class App extends Component {
   state = {
     searchText: '',
     isLoading: false,
-    photos: null,
+    photos: [],
     page: 1,
-    isHidden: false,
-        modalSrc:null,
+   showModal: false,
+    modalImgSrc: "",
   };
-
-    componentDidMount() {
-        window.addEventListener('keydown', this.handleKeyDown)
-    }
-    handleKeyDown = e => {
-        if (e.code === "Escape") {
-            this.setState({ isHidden:false})
-        }
-            
-    }
-    componentWillUnmount =()=> {
-        window.removeEventListener("keydown", this.handleKeyDown)
-    }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.searchText !== this.state.searchText) {
@@ -53,6 +40,7 @@ export default class App extends Component {
       });
   };
 
+   
   handleFormSubmit = (inputSearch) => {
     this.setState({ searchText: inputSearch });
   };
@@ -63,49 +51,27 @@ export default class App extends Component {
     });
   };
  
-  handleOverlay = ({target}) => {
-        if(target.tagName !=="IMG") this.setState({isHidden:false})
-    }
-  // handleImage = ({ target }) => {
-  //     console.log(target);
-  //       if(target.tagName === "IMG") 
-  //       {this.setState({
-  //           isHidden: true,
-  //           modalSrc:target.lowsrc,
-  //       })
-  //       } else {
-  //           this.setState({
-  //           isHidden: false,
-  //       })
-  //       }
-  //   }
-  
-handleImage = (event) => {
-  const { tagName, lowsrc } = event.target;
-  if (tagName === "IMG" && lowsrc) {
-    this.setState({
-      isHidden: true,
-      modalSrc: lowsrc
-    });
-  } else {
-    this.setState({
-      isHidden: false,
-      modalSrc: null
-    });
-  }
-};
+modalOpen = e => {
+    if(e.target.nodeName === 'IMG') {
+      this.setState({showModal: true, modalImgSrc: e.target.getAttribute("data-modal")})
+    };
+  };
+
+  modalClose = () => {
+    this.setState({showModal: false, modalImgSrc: ""});
+  };
+
 
   render() {
-    const { photos, isLoading, isHidden} = this.state;
+    const { photos, isLoading,showModal, modalImgSrc, modalImgAlt } = this.state;
     return (
       <Base>
       <Container>
         <Searchbar onSearch={this.handleFormSubmit} />
         {isLoading && <Loader />}
-        {photos && <ImageGallery photos={photos} onLoadMore={this.handleLoadMore} onPhotoClick={this.handleImage}/>}
-        {isHidden && <Modal
-                overlayClick={this.handleOverlay}
-                largeImage={this.state.modalSrc} />}
+        {photos && (<ImageGallery photos={photos} modalOpen={this.modalOpen} onLoadMore={this.handleLoadMore}/>
+        )}
+        {showModal  && <Modal modalClose={this.modalClose} children={<img src={modalImgSrc} alt={modalImgAlt}/>}/>}
         </Container>
         </Base>
     );

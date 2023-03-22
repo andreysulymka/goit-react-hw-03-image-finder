@@ -1,15 +1,17 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import ImageGalleryItem from "components/ImageGalleryItem";
 import LoadMoreButton from "components/LoadMoreBtn/LoadMoreBtn";
 import { List } from "./ImageGallery.styled";
 
 
-const ImageGallery = ({ photos, onLoadMore, onPhotoClick  }) => {
+const ImageGallery = ({ photos, onLoadMore, modalOpen }) => {
+  
   return (
     <div>
-      <List >
+      <List onClick={modalOpen}>
         {photos.map((photo) => (
-          <ImageGalleryItem key={photo.id} photo={photo}  onPhotoClick={onPhotoClick}/>
+          <ImageGalleryItem key={photo.id} src={photo.webformatURL} alt={photo.tags} srcLarge={photo.largeImageURL} />
         ))}
       </List>
       <div >
@@ -17,6 +19,17 @@ const ImageGallery = ({ photos, onLoadMore, onPhotoClick  }) => {
       </div>
     </div>
   );
+};
+
+ImageGallery.propTypes = {
+  photos: PropTypes.arrayOf(PropTypes.shape({
+    src: PropTypes.string,
+    alt: PropTypes.string,
+    id: PropTypes.number,
+    srcLarge: PropTypes.string,
+  })),
+  modalOpen: PropTypes.func,
+  onLoadMore: PropTypes.func,
 };
 
 export default ImageGallery;

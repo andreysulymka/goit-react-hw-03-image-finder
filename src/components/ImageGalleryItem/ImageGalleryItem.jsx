@@ -1,23 +1,23 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Image, Item } from "./ImageGalleryItem.styled";
 
-// const ImageGalleryItem = ({link, altTitle, largeImage}) =>{
-//   return <li >
-//       <a href={largeImage}>
-//       <img src={link} alt={altTitle} />
-//       </a>
-// </li>
-// }
-
-const ImageGalleryItem = ({ photo, onPhotoClick }) => {
+const ImageGalleryItem = ({ src, alt, srcLarge }) => {
+  
   return (
     <Item>
       
-        <Image src={photo.webformatURL} alt={photo.tags} lowsrc={photo.largeImageURL} onClick={() => onPhotoClick(photo.largeImageURL)}/>
+        <Image src={src} alt={alt} data-modal={srcLarge}/>
       
     </Item>
   );
 };
 
+
+ImageGalleryItem.propTypes = {
+    src: PropTypes.string,
+    alt: PropTypes.string,
+    srcLarge: PropTypes.string,
+};
 export default ImageGalleryItem;
 
