@@ -20,14 +20,15 @@ export default class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.searchText !== this.state.searchText||prevState.page !== this.state.page) {
-      this.setState({ isLoading: true});}
+    if (prevState.searchText !== this.state.searchText || prevState.page !== this.state.page) {
+      this.setState({ isLoading: true });
+      this.loadPhotos();
+    }
   }
 
  loadPhotos = () => {
    const { searchText, page } = this.state;
-    getPhotos(searchText, page)
-  
+    getPhotos(searchText, page)  
     .then((photos) => {
       if (photos.hits.length === 0) {
         
@@ -54,6 +55,7 @@ export default class App extends Component {
   };
 
   handleLoadMore = () => {
+    console.log("Єта кнопка")
     this.setState((prevState) => ({ page: prevState.page + 1 }));
   };
  
@@ -77,7 +79,7 @@ modalOpen = e => {
         {isLoading && <Loader />}
         {photos && photos.length > 0 && (<ImageGallery photos={photos} modalOpen={this.modalOpen} />
           )}
-          {showBTN && <LoadMoreButton onLoadMore={this.handleLoadMore} />}
+          {showBTN && <LoadMoreButton onClick={this.handleLoadMore}/>}
         {showModal  && <Modal modalClose={this.modalClose} children={<img src={modalImgSrc} alt={modalImgAlt}/>}/>}
         </Container>
         </Base>
