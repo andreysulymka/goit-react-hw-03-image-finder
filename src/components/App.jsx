@@ -4,6 +4,7 @@ import Searchbar from "./Searchbar";
 import { getPhotos } from "./services/getPhotos";
 import ImageGallery from "./ImageGallery";
 import Modal from "./Modal/Modal"
+import LoadMoreButton from "./LoadMoreBtn/LoadMoreBtn";
 import { Base, Container } from "./App.styled";
 import Notiflix from 'notiflix';
 
@@ -20,15 +21,13 @@ export default class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.searchText !== this.state.searchText||prevState.page !== this.state.page) {
-      this.setState({ isLoading: true}, () => {
-        this.loadPhotos();
-      });    }
+      this.setState({ isLoading: true});}
   }
 
  loadPhotos = () => {
-  const { searchText, page } = this.state;
-  getPhotos(searchText, page)
-    .then((res) => res.json())
+   const { searchText, page } = this.state;
+    getPhotos(searchText, page)
+  
     .then((photos) => {
       if (photos.hits.length === 0) {
         
@@ -70,14 +69,15 @@ modalOpen = e => {
 
 
   render() {
-    const { photos, isLoading,showModal, modalImgSrc, modalImgAlt } = this.state;
+    const { photos, isLoading,showModal, modalImgSrc, modalImgAlt, showBTN } = this.state;
     return (
       <Base>
       <Container>
         <Searchbar onSearch={this.handleFormSubmit} />
         {isLoading && <Loader />}
-        {photos && photos.length > 0 && (<ImageGallery photos={photos} modalOpen={this.modalOpen} onLoadMore={this.handleLoadMore}/>
-        )}
+        {photos && photos.length > 0 && (<ImageGallery photos={photos} modalOpen={this.modalOpen} />
+          )}
+          {showBTN && <LoadMoreButton onLoadMore={this.handleLoadMore} />}
         {showModal  && <Modal modalClose={this.modalClose} children={<img src={modalImgSrc} alt={modalImgAlt}/>}/>}
         </Container>
         </Base>
